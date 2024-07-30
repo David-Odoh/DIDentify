@@ -1,0 +1,15 @@
+syntax = "proto3";
+package identity.storage;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "identity/x/storage/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "identity/x/storage/Params";
+  option (gogoproto.equal) = true;
+
+  
+}

@@ -53,9 +53,18 @@ import (
 	ibcexported "github.com/cosmos/ibc-go/v8/modules/core/exported"
 	"google.golang.org/protobuf/types/known/durationpb"
 
+	authenticationmodulev1 "identity/api/identity/authentication/module"
 	identitymodulev1 "identity/api/identity/identity/module"
+	storagemodulev1 "identity/api/identity/storage/module"
+	testmodmodulev1 "identity/api/identity/testmod/module"
+	_ "identity/x/authentication/module" // import for side-effects
+	authenticationmoduletypes "identity/x/authentication/types"
 	_ "identity/x/identity/module" // import for side-effects
 	identitymoduletypes "identity/x/identity/types"
+	_ "identity/x/storage/module" // import for side-effects
+	storagemoduletypes "identity/x/storage/types"
+	_ "identity/x/testmod/module" // import for side-effects
+	testmodmoduletypes "identity/x/testmod/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
@@ -94,6 +103,9 @@ var (
 		circuittypes.ModuleName,
 		// chain modules
 		identitymoduletypes.ModuleName,
+		authenticationmoduletypes.ModuleName,
+		storagemoduletypes.ModuleName,
+		testmodmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	}
 
@@ -119,6 +131,9 @@ var (
 		ibcfeetypes.ModuleName,
 		// chain modules
 		identitymoduletypes.ModuleName,
+		authenticationmoduletypes.ModuleName,
+		storagemoduletypes.ModuleName,
+		testmodmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	}
 
@@ -138,6 +153,9 @@ var (
 		ibcfeetypes.ModuleName,
 		// chain modules
 		identitymoduletypes.ModuleName,
+		authenticationmoduletypes.ModuleName,
+		storagemoduletypes.ModuleName,
+		testmodmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	}
 
@@ -296,6 +314,18 @@ var (
 			{
 				Name:   identitymoduletypes.ModuleName,
 				Config: appconfig.WrapAny(&identitymodulev1.Module{}),
+			},
+			{
+				Name:   authenticationmoduletypes.ModuleName,
+				Config: appconfig.WrapAny(&authenticationmodulev1.Module{}),
+			},
+			{
+				Name:   storagemoduletypes.ModuleName,
+				Config: appconfig.WrapAny(&storagemodulev1.Module{}),
+			},
+			{
+				Name:   testmodmoduletypes.ModuleName,
+				Config: appconfig.WrapAny(&testmodmodulev1.Module{}),
 			},
 			// this line is used by starport scaffolding # stargate/app/moduleConfig
 		},

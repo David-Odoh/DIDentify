@@ -75,7 +75,12 @@ import (
 	ibctransferkeeper "github.com/cosmos/ibc-go/v8/modules/apps/transfer/keeper"
 	ibckeeper "github.com/cosmos/ibc-go/v8/modules/core/keeper"
 
+	authenticationmodulekeeper "identity/x/authentication/keeper"
 	identitymodulekeeper "identity/x/identity/keeper"
+
+	storagemodulekeeper "identity/x/storage/keeper"
+	testmodmodulekeeper "identity/x/testmod/keeper"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	"identity/docs"
@@ -140,7 +145,10 @@ type App struct {
 	ScopedICAControllerKeeper capabilitykeeper.ScopedKeeper
 	ScopedICAHostKeeper       capabilitykeeper.ScopedKeeper
 
-	IdentityKeeper identitymodulekeeper.Keeper
+	IdentityKeeper       identitymodulekeeper.Keeper
+	AuthenticationKeeper authenticationmodulekeeper.Keeper
+	StorageKeeper        storagemodulekeeper.Keeper
+	TestmodKeeper        testmodmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// simulation manager
@@ -280,6 +288,9 @@ func New(
 		&app.GroupKeeper,
 		&app.CircuitBreakerKeeper,
 		&app.IdentityKeeper,
+		&app.AuthenticationKeeper,
+		&app.StorageKeeper,
+		&app.TestmodKeeper,
 		// this line is used by starport scaffolding # stargate/app/keeperDefinition
 	); err != nil {
 		panic(err)

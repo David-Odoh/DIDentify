@@ -8,7 +8,6 @@ package identity
 
 import (
 	context "context"
-
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -20,7 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Query_Params_FullMethodName = "/identity.identity.Query/Params"
+	Query_Params_FullMethodName         = "/identity.identity.Query/Params"
+	Query_Identity_FullMethodName       = "/identity.identity.Query/Identity"
+	Query_IdentityAll_FullMethodName    = "/identity.identity.Query/IdentityAll"
+	Query_SearchIdentity_FullMethodName = "/identity.identity.Query/SearchIdentity"
 )
 
 // QueryClient is the client API for Query service.
@@ -29,6 +31,11 @@ const (
 type QueryClient interface {
 	// Parameters queries the parameters of the module.
 	Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error)
+	// Queries a list of Identity items.
+	Identity(ctx context.Context, in *QueryGetIdentityRequest, opts ...grpc.CallOption) (*QueryGetIdentityResponse, error)
+	IdentityAll(ctx context.Context, in *QueryAllIdentityRequest, opts ...grpc.CallOption) (*QueryAllIdentityResponse, error)
+	// Queries a list of SearchIdentity items.
+	SearchIdentity(ctx context.Context, in *QuerySearchIdentityRequest, opts ...grpc.CallOption) (*QuerySearchIdentityResponse, error)
 }
 
 type queryClient struct {
@@ -48,12 +55,44 @@ func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts .
 	return out, nil
 }
 
+func (c *queryClient) Identity(ctx context.Context, in *QueryGetIdentityRequest, opts ...grpc.CallOption) (*QueryGetIdentityResponse, error) {
+	out := new(QueryGetIdentityResponse)
+	err := c.cc.Invoke(ctx, Query_Identity_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) IdentityAll(ctx context.Context, in *QueryAllIdentityRequest, opts ...grpc.CallOption) (*QueryAllIdentityResponse, error) {
+	out := new(QueryAllIdentityResponse)
+	err := c.cc.Invoke(ctx, Query_IdentityAll_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) SearchIdentity(ctx context.Context, in *QuerySearchIdentityRequest, opts ...grpc.CallOption) (*QuerySearchIdentityResponse, error) {
+	out := new(QuerySearchIdentityResponse)
+	err := c.cc.Invoke(ctx, Query_SearchIdentity_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 // All implementations must embed UnimplementedQueryServer
 // for forward compatibility
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
 	Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error)
+	// Queries a list of Identity items.
+	Identity(context.Context, *QueryGetIdentityRequest) (*QueryGetIdentityResponse, error)
+	IdentityAll(context.Context, *QueryAllIdentityRequest) (*QueryAllIdentityResponse, error)
+	// Queries a list of SearchIdentity items.
+	SearchIdentity(context.Context, *QuerySearchIdentityRequest) (*QuerySearchIdentityResponse, error)
 	mustEmbedUnimplementedQueryServer()
 }
 
@@ -63,6 +102,15 @@ type UnimplementedQueryServer struct {
 
 func (UnimplementedQueryServer) Params(context.Context, *QueryParamsRequest) (*QueryParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Params not implemented")
+}
+func (UnimplementedQueryServer) Identity(context.Context, *QueryGetIdentityRequest) (*QueryGetIdentityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Identity not implemented")
+}
+func (UnimplementedQueryServer) IdentityAll(context.Context, *QueryAllIdentityRequest) (*QueryAllIdentityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IdentityAll not implemented")
+}
+func (UnimplementedQueryServer) SearchIdentity(context.Context, *QuerySearchIdentityRequest) (*QuerySearchIdentityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchIdentity not implemented")
 }
 func (UnimplementedQueryServer) mustEmbedUnimplementedQueryServer() {}
 
@@ -95,6 +143,60 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_Identity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetIdentityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).Identity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_Identity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).Identity(ctx, req.(*QueryGetIdentityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_IdentityAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllIdentityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).IdentityAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_IdentityAll_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).IdentityAll(ctx, req.(*QueryAllIdentityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_SearchIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QuerySearchIdentityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).SearchIdentity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Query_SearchIdentity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).SearchIdentity(ctx, req.(*QuerySearchIdentityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Query_ServiceDesc is the grpc.ServiceDesc for Query service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -105,6 +207,18 @@ var Query_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Params",
 			Handler:    _Query_Params_Handler,
+		},
+		{
+			MethodName: "Identity",
+			Handler:    _Query_Identity_Handler,
+		},
+		{
+			MethodName: "IdentityAll",
+			Handler:    _Query_IdentityAll_Handler,
+		},
+		{
+			MethodName: "SearchIdentity",
+			Handler:    _Query_SearchIdentity_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

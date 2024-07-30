@@ -1,0 +1,17 @@
+syntax = "proto3";
+package identity.authentication;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "identity/authentication/params.proto";
+
+option go_package = "identity/x/authentication/types";
+
+// GenesisState defines the authentication module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}

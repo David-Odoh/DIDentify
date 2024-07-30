@@ -8,7 +8,6 @@ package identity
 
 import (
 	context "context"
-
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -20,7 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Msg_UpdateParams_FullMethodName = "/identity.identity.Msg/UpdateParams"
+	Msg_UpdateParams_FullMethodName     = "/identity.identity.Msg/UpdateParams"
+	Msg_RegisterIdentity_FullMethodName = "/identity.identity.Msg/RegisterIdentity"
+	Msg_ApproveIdentity_FullMethodName  = "/identity.identity.Msg/ApproveIdentity"
+	Msg_CreateDid_FullMethodName        = "/identity.identity.Msg/CreateDid"
 )
 
 // MsgClient is the client API for Msg service.
@@ -30,6 +32,9 @@ type MsgClient interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
+	RegisterIdentity(ctx context.Context, in *MsgRegisterIdentity, opts ...grpc.CallOption) (*MsgRegisterIdentityResponse, error)
+	ApproveIdentity(ctx context.Context, in *MsgApproveIdentity, opts ...grpc.CallOption) (*MsgApproveIdentityResponse, error)
+	CreateDid(ctx context.Context, in *MsgCreateDid, opts ...grpc.CallOption) (*MsgCreateDidResponse, error)
 }
 
 type msgClient struct {
@@ -49,6 +54,33 @@ func (c *msgClient) UpdateParams(ctx context.Context, in *MsgUpdateParams, opts 
 	return out, nil
 }
 
+func (c *msgClient) RegisterIdentity(ctx context.Context, in *MsgRegisterIdentity, opts ...grpc.CallOption) (*MsgRegisterIdentityResponse, error) {
+	out := new(MsgRegisterIdentityResponse)
+	err := c.cc.Invoke(ctx, Msg_RegisterIdentity_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) ApproveIdentity(ctx context.Context, in *MsgApproveIdentity, opts ...grpc.CallOption) (*MsgApproveIdentityResponse, error) {
+	out := new(MsgApproveIdentityResponse)
+	err := c.cc.Invoke(ctx, Msg_ApproveIdentity_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) CreateDid(ctx context.Context, in *MsgCreateDid, opts ...grpc.CallOption) (*MsgCreateDidResponse, error) {
+	out := new(MsgCreateDidResponse)
+	err := c.cc.Invoke(ctx, Msg_CreateDid_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -56,6 +88,9 @@ type MsgServer interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
+	RegisterIdentity(context.Context, *MsgRegisterIdentity) (*MsgRegisterIdentityResponse, error)
+	ApproveIdentity(context.Context, *MsgApproveIdentity) (*MsgApproveIdentityResponse, error)
+	CreateDid(context.Context, *MsgCreateDid) (*MsgCreateDidResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -65,6 +100,15 @@ type UnimplementedMsgServer struct {
 
 func (UnimplementedMsgServer) UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateParams not implemented")
+}
+func (UnimplementedMsgServer) RegisterIdentity(context.Context, *MsgRegisterIdentity) (*MsgRegisterIdentityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegisterIdentity not implemented")
+}
+func (UnimplementedMsgServer) ApproveIdentity(context.Context, *MsgApproveIdentity) (*MsgApproveIdentityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ApproveIdentity not implemented")
+}
+func (UnimplementedMsgServer) CreateDid(context.Context, *MsgCreateDid) (*MsgCreateDidResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateDid not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -97,6 +141,60 @@ func _Msg_UpdateParams_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_RegisterIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRegisterIdentity)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).RegisterIdentity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_RegisterIdentity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).RegisterIdentity(ctx, req.(*MsgRegisterIdentity))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_ApproveIdentity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgApproveIdentity)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).ApproveIdentity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_ApproveIdentity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).ApproveIdentity(ctx, req.(*MsgApproveIdentity))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_CreateDid_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCreateDid)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).CreateDid(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_CreateDid_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).CreateDid(ctx, req.(*MsgCreateDid))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -107,6 +205,18 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateParams",
 			Handler:    _Msg_UpdateParams_Handler,
+		},
+		{
+			MethodName: "RegisterIdentity",
+			Handler:    _Msg_RegisterIdentity_Handler,
+		},
+		{
+			MethodName: "ApproveIdentity",
+			Handler:    _Msg_ApproveIdentity_Handler,
+		},
+		{
+			MethodName: "CreateDid",
+			Handler:    _Msg_CreateDid_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

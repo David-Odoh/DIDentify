@@ -1,0 +1,15 @@
+syntax = "proto3";
+package identity.testmod;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "identity/x/testmod/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "identity/x/testmod/Params";
+  option (gogoproto.equal) = true;
+
+  
+}

@@ -17,6 +17,24 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Use:       "params",
 					Short:     "Shows the parameters of the module",
 				},
+				{
+					RpcMethod: "IdentityAll",
+					Use:       "list-identity",
+					Short:     "List all identity",
+				},
+				{
+					RpcMethod:      "Identity",
+					Use:            "show-identity [id]",
+					Short:          "Shows a identity by id",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "id"}},
+				},
+				{
+					RpcMethod:      "SearchIdentity",
+					Use:            "search-identity [national-id]",
+					Short:          "Query searchIdentity",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "nationalId"}},
+				},
+
 				// this line is used by ignite scaffolding # autocli/query
 			},
 		},
@@ -27,6 +45,24 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				{
 					RpcMethod: "UpdateParams",
 					Skip:      true, // skipped because authority gated
+				},
+				{
+					RpcMethod:      "RegisterIdentity",
+					Use:            "register-identity [name] [birthdate] [national-id]",
+					Short:          "Send a registerIdentity tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "name"}, {ProtoField: "birthdate"}, {ProtoField: "nationalId"}},
+				},
+				{
+					RpcMethod:      "ApproveIdentity",
+					Use:            "approve-identity [id] [name] [birthdate] [national-id]",
+					Short:          "Send a approveIdentity tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "id"}, {ProtoField: "name"}, {ProtoField: "birthdate"}, {ProtoField: "nationalId"}},
+				},
+				{
+					RpcMethod:      "CreateDid",
+					Use:            "create-did",
+					Short:          "Send a createDID tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{},
 				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},

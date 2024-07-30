@@ -1,0 +1,17 @@
+syntax = "proto3";
+package identity.testmod;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "identity/testmod/params.proto";
+
+option go_package = "identity/x/testmod/types";
+
+// GenesisState defines the testmod module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}

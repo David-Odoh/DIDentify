@@ -1,0 +1,14 @@
+syntax = "proto3";
+package identity.identity;
+
+option go_package = "identity/x/identity/types";
+
+message Identity {
+  uint64 id = 1;
+  string creator = 2; 
+  string name = 3; 
+  string birthdate = 4; 
+  string nationalId = 5; 
+  bool verified   = 6;
+  string did = 7;
+}
