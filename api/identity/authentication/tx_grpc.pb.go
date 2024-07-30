@@ -19,7 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Msg_UpdateParams_FullMethodName = "/identity.authentication.Msg/UpdateParams"
+	Msg_UpdateParams_FullMethodName      = "/identity.authentication.Msg/UpdateParams"
+	Msg_GenerateChallenge_FullMethodName = "/identity.authentication.Msg/GenerateChallenge"
+	Msg_VerifyChallenge_FullMethodName   = "/identity.authentication.Msg/VerifyChallenge"
+	Msg_AuthenticateUser_FullMethodName  = "/identity.authentication.Msg/AuthenticateUser"
 )
 
 // MsgClient is the client API for Msg service.
@@ -29,6 +32,9 @@ type MsgClient interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(ctx context.Context, in *MsgUpdateParams, opts ...grpc.CallOption) (*MsgUpdateParamsResponse, error)
+	GenerateChallenge(ctx context.Context, in *MsgGenerateChallenge, opts ...grpc.CallOption) (*MsgGenerateChallengeResponse, error)
+	VerifyChallenge(ctx context.Context, in *MsgVerifyChallenge, opts ...grpc.CallOption) (*MsgVerifyChallengeResponse, error)
+	AuthenticateUser(ctx context.Context, in *MsgAuthenticateUser, opts ...grpc.CallOption) (*MsgAuthenticateUserResponse, error)
 }
 
 type msgClient struct {
@@ -48,6 +54,33 @@ func (c *msgClient) UpdateParams(ctx context.Context, in *MsgUpdateParams, opts 
 	return out, nil
 }
 
+func (c *msgClient) GenerateChallenge(ctx context.Context, in *MsgGenerateChallenge, opts ...grpc.CallOption) (*MsgGenerateChallengeResponse, error) {
+	out := new(MsgGenerateChallengeResponse)
+	err := c.cc.Invoke(ctx, Msg_GenerateChallenge_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) VerifyChallenge(ctx context.Context, in *MsgVerifyChallenge, opts ...grpc.CallOption) (*MsgVerifyChallengeResponse, error) {
+	out := new(MsgVerifyChallengeResponse)
+	err := c.cc.Invoke(ctx, Msg_VerifyChallenge_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) AuthenticateUser(ctx context.Context, in *MsgAuthenticateUser, opts ...grpc.CallOption) (*MsgAuthenticateUserResponse, error) {
+	out := new(MsgAuthenticateUserResponse)
+	err := c.cc.Invoke(ctx, Msg_AuthenticateUser_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -55,6 +88,9 @@ type MsgServer interface {
 	// UpdateParams defines a (governance) operation for updating the module
 	// parameters. The authority defaults to the x/gov module account.
 	UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error)
+	GenerateChallenge(context.Context, *MsgGenerateChallenge) (*MsgGenerateChallengeResponse, error)
+	VerifyChallenge(context.Context, *MsgVerifyChallenge) (*MsgVerifyChallengeResponse, error)
+	AuthenticateUser(context.Context, *MsgAuthenticateUser) (*MsgAuthenticateUserResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -64,6 +100,15 @@ type UnimplementedMsgServer struct {
 
 func (UnimplementedMsgServer) UpdateParams(context.Context, *MsgUpdateParams) (*MsgUpdateParamsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateParams not implemented")
+}
+func (UnimplementedMsgServer) GenerateChallenge(context.Context, *MsgGenerateChallenge) (*MsgGenerateChallengeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GenerateChallenge not implemented")
+}
+func (UnimplementedMsgServer) VerifyChallenge(context.Context, *MsgVerifyChallenge) (*MsgVerifyChallengeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyChallenge not implemented")
+}
+func (UnimplementedMsgServer) AuthenticateUser(context.Context, *MsgAuthenticateUser) (*MsgAuthenticateUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AuthenticateUser not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -96,6 +141,60 @@ func _Msg_UpdateParams_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_GenerateChallenge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgGenerateChallenge)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).GenerateChallenge(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_GenerateChallenge_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).GenerateChallenge(ctx, req.(*MsgGenerateChallenge))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_VerifyChallenge_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgVerifyChallenge)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).VerifyChallenge(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_VerifyChallenge_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).VerifyChallenge(ctx, req.(*MsgVerifyChallenge))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Msg_AuthenticateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgAuthenticateUser)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).AuthenticateUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_AuthenticateUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).AuthenticateUser(ctx, req.(*MsgAuthenticateUser))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -106,6 +205,18 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateParams",
 			Handler:    _Msg_UpdateParams_Handler,
+		},
+		{
+			MethodName: "GenerateChallenge",
+			Handler:    _Msg_GenerateChallenge_Handler,
+		},
+		{
+			MethodName: "VerifyChallenge",
+			Handler:    _Msg_VerifyChallenge_Handler,
+		},
+		{
+			MethodName: "AuthenticateUser",
+			Handler:    _Msg_AuthenticateUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

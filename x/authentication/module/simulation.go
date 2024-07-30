@@ -23,7 +23,19 @@ var (
 )
 
 const (
-// this line is used by starport scaffolding # simapp/module/const
+	opWeightMsgGenerateChallenge = "op_weight_msg_generate_challenge"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgGenerateChallenge int = 100
+
+	opWeightMsgVerifyChallenge = "op_weight_msg_verify_challenge"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgVerifyChallenge int = 100
+
+	opWeightMsgAuthenticateUser = "op_weight_msg_authenticate_user"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgAuthenticateUser int = 100
+
+	// this line is used by starport scaffolding # simapp/module/const
 )
 
 // GenerateGenesisState creates a randomized GenState of the module.
@@ -46,6 +58,39 @@ func (am AppModule) RegisterStoreDecoder(_ simtypes.StoreDecoderRegistry) {}
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
 
+	var weightMsgGenerateChallenge int
+	simState.AppParams.GetOrGenerate(opWeightMsgGenerateChallenge, &weightMsgGenerateChallenge, nil,
+		func(_ *rand.Rand) {
+			weightMsgGenerateChallenge = defaultWeightMsgGenerateChallenge
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgGenerateChallenge,
+		authenticationsimulation.SimulateMsgGenerateChallenge(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgVerifyChallenge int
+	simState.AppParams.GetOrGenerate(opWeightMsgVerifyChallenge, &weightMsgVerifyChallenge, nil,
+		func(_ *rand.Rand) {
+			weightMsgVerifyChallenge = defaultWeightMsgVerifyChallenge
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgVerifyChallenge,
+		authenticationsimulation.SimulateMsgVerifyChallenge(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgAuthenticateUser int
+	simState.AppParams.GetOrGenerate(opWeightMsgAuthenticateUser, &weightMsgAuthenticateUser, nil,
+		func(_ *rand.Rand) {
+			weightMsgAuthenticateUser = defaultWeightMsgAuthenticateUser
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgAuthenticateUser,
+		authenticationsimulation.SimulateMsgAuthenticateUser(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
 	// this line is used by starport scaffolding # simapp/module/operation
 
 	return operations
@@ -54,6 +99,30 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 // ProposalMsgs returns msgs used for governance proposals for simulations.
 func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.WeightedProposalMsg {
 	return []simtypes.WeightedProposalMsg{
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgGenerateChallenge,
+			defaultWeightMsgGenerateChallenge,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				authenticationsimulation.SimulateMsgGenerateChallenge(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgVerifyChallenge,
+			defaultWeightMsgVerifyChallenge,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				authenticationsimulation.SimulateMsgVerifyChallenge(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgAuthenticateUser,
+			defaultWeightMsgAuthenticateUser,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				authenticationsimulation.SimulateMsgAuthenticateUser(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
 		// this line is used by starport scaffolding # simapp/module/OpMsg
 	}
 }

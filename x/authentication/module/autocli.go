@@ -28,6 +28,24 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod: "UpdateParams",
 					Skip:      true, // skipped because authority gated
 				},
+				{
+					RpcMethod:      "GenerateChallenge",
+					Use:            "generate-challenge [did]",
+					Short:          "Send a GenerateChallenge tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "did"}},
+				},
+				{
+					RpcMethod:      "VerifyChallenge",
+					Use:            "verify-challenge [did] [signed-challenge]",
+					Short:          "Send a VerifyChallenge tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "did"}, {ProtoField: "signedChallenge"}},
+				},
+				{
+					RpcMethod:      "AuthenticateUser",
+					Use:            "authenticate-user [did] [signed-challenge]",
+					Short:          "Send a AuthenticateUser tx",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "did"}, {ProtoField: "signedChallenge"}},
+				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},
 		},
