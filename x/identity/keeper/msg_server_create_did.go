@@ -14,8 +14,8 @@ func (k msgServer) CreateDid(goCtx context.Context, msg *types.MsgCreateDid) (*t
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// Replace with the appropriate wallet UUID
-	walletUUID := "b40a3b29-2a55-4db5-84ff-ff60380635eb"
-	did, err := k.CreateDIDHandler(goCtx, walletUUID)
+	// WalletIdentifier := "b40a3b29-2a55-4db5-84ff-ff60380635eb"
+	did, err := k.CreateDIDHandler(goCtx, msg.WalletIdentifier)
 	if err != nil {
 		return nil, err
 	}

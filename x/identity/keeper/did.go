@@ -11,9 +11,9 @@ import (
 )
 
 // CreateDIDHandler creates a DID using the walt.id API
-func (k Keeper) CreateDIDHandler(ctx context.Context, walletUUID string) (string, error) {
+func (k Keeper) CreateDIDHandler(ctx context.Context, WalletId string) (string, error) {
 	baseURL := "https://wallet.walt.id"
-	url := fmt.Sprintf("%s/wallet-api/wallet/%s/dids/create/jwk", baseURL, walletUUID)
+	url := fmt.Sprintf("%s/wallet-api/wallet/%s/dids/create/jwk", baseURL, WalletId)
 
 	req, err := http.NewRequestWithContext(ctx, "POST", url, nil)
 	if err != nil {

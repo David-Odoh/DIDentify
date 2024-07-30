@@ -63,8 +63,9 @@ message MsgApproveIdentityResponse {}
 
 message MsgCreateDid {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator = 1;
-  uint64 id      = 2;
+  string creator          = 1;
+  uint64 id               = 2;
+  string walletIdentifier = 3;
 }
 
 message MsgCreateDidResponse {}

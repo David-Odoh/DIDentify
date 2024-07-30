@@ -62,7 +62,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					RpcMethod:      "CreateDid",
 					Use:            "create-did",
 					Short:          "Send a createDID tx",
-					PositionalArgs: []*autocliv1.PositionalArgDescriptor{},
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{{ProtoField: "walletIdentifier"}},
 				},
 				// this line is used by ignite scaffolding # autocli/tx
 			},
